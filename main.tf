@@ -1,10 +1,6 @@
 terraform {
   required_version = "= 1.5.7"
   required_providers {
-    docker = {
-      source  = "kreuzwerker/docker"
-      version = "3.0.2"
-    }
     github = {
       source  = "integrations/github"
       version = "6.5.0"
@@ -36,14 +32,6 @@ provider "google-beta" {
   project = var.project
 }
 
-provider "docker" {
-  alias = "local"
-  registry_auth {
-    address     = "us-docker.pkg.dev"
-    config_file = pathexpand("~/.docker/config.json")
-  }
-}
-
 module "ocrpdf" {
   source = "./modules/cloudrun"
 
@@ -61,7 +49,6 @@ module "ocrpdf" {
   ])
   providers = {
     google = google.default
-    docker = docker.local
   }
 }
 
@@ -82,7 +69,6 @@ module "pandoc" {
   ])
   providers = {
     google = google.default
-    docker = docker.local
   }
 }
 
@@ -106,7 +92,6 @@ module "whisper" {
   regions = ["us-central1"]
   providers = {
     google-beta = google-beta.default
-    docker      = docker.local
   }
 }
 
@@ -127,7 +112,6 @@ module "houdini" {
   ])
   providers = {
     google = google.default
-    docker = docker.local
   }
 }
 
@@ -149,7 +133,6 @@ module "libreoffice" {
   ])
   providers = {
     google = google.default
-    docker = docker.local
   }
 }
 
@@ -170,7 +153,6 @@ module "homarus" {
   ])
   providers = {
     google = google.default
-    docker = docker.local
   }
 }
 
@@ -191,7 +173,6 @@ module "hypercube" {
   ])
   providers = {
     google = google.default
-    docker = docker.local
   }
 }
 
@@ -211,7 +192,6 @@ module "fits" {
 
   providers = {
     google = google.default
-    docker = docker.local
   }
 }
 
@@ -249,7 +229,6 @@ EOT
   ])
   providers = {
     google = google.default
-    docker = docker.local
   }
 }
 
