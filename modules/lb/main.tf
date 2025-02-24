@@ -70,21 +70,21 @@ resource "google_compute_url_map" "default" {
   path_matcher {
     name            = "allpaths"
     default_service = var.backends.houdini
+    # send paths that match a service to respective backend/CR
     dynamic "path_rule" {
       for_each = var.backends
       content {
-        paths   = ["/${path_rule.key}", "/${path_rule.key}/*"]
+        paths = [
+          "/${path_rule.key}",
+          "/${path_rule.key}/*"
+        ]
         service = path_rule.value
-      }
-    }
-    dynamic "path_rule" {
-      for_each = var.backends
-      content {
-        paths   = ["/${path_rule.key}/healthcheck"]
-        service = path_rule.value
-        route_action {
-          url_rewrite {
-            path_prefix_rewrite = "/healthcheck"
+        dynamic "route_action" {
+          for_each = path_rule.key == "fits" ? [] : [1]
+          content {
+            url_rewrite {
+              path_prefix_rewrite = "/"
+            }
           }
         }
       }
