@@ -40,7 +40,7 @@ module "ocrpdf" {
   containers = tolist([
     {
       name           = "ocrpdf",
-      image          = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-ocrpdf:main",
+      image          = "lehighlts/scyllaridae-ocrpdf:main",
       port           = 8080
       liveness_probe = "/healthcheck"
       memory         = "4Gi"
@@ -60,7 +60,7 @@ module "pandoc" {
   containers = tolist([
     {
       name           = "pandoc",
-      image          = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-pandoc:main",
+      image          = "lehighlts/scyllaridae-pandoc:main",
       port           = 8080
       liveness_probe = "/healthcheck"
       memory         = "4Gi"
@@ -81,7 +81,7 @@ module "whisper" {
   containers = tolist([
     {
       name           = "whisper",
-      image          = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-whisper:main",
+      image          = "lehighlts/scyllaridae-whisper:main",
       port           = 8080
       liveness_probe = "/healthcheck"
       memory         = "16Gi"
@@ -103,7 +103,7 @@ module "houdini" {
   containers = tolist([
     {
       name           = "houdini",
-      image          = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-imagemagick:main",
+      image          = "lehighlts/scyllaridae-imagemagick:main",
       port           = 8080
       memory         = "8Gi"
       cpu            = "2000m"
@@ -124,7 +124,7 @@ module "libreoffice" {
   containers = tolist([
     {
       name           = "libreoffice",
-      image          = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-libreoffice:main",
+      image          = "lehighlts/scyllaridae-libreoffice:main",
       port           = 8080
       memory         = "4Gi"
       cpu            = "1000m"
@@ -144,7 +144,7 @@ module "homarus" {
   containers = tolist([
     {
       name           = "homarus",
-      image          = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-ffmpeg:main",
+      image          = "lehighlts/scyllaridae-ffmpeg:main",
       port           = 8080
       liveness_probe = "/healthcheck"
       memory         = "8Gi"
@@ -164,7 +164,7 @@ module "hypercube" {
   containers = tolist([
     {
       name           = "hypercube",
-      image          = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-tesseract:main",
+      image          = "lehighlts/scyllaridae-tesseract:main",
       port           = 8080
       memory         = "8Gi"
       cpu            = "2000m"
@@ -203,7 +203,7 @@ module "crayfits" {
   containers = tolist([
     {
       name           = "crayfits",
-      image          = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-fits:main",
+      image          = "lehighlts/scyllaridae-fits:main",
       memory         = "4Gi"
       cpu            = "2000m"
       liveness_probe = "/healthcheck"
