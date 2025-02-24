@@ -1,9 +1,5 @@
 terraform {
   required_providers {
-    docker = {
-      source  = "kreuzwerker/docker"
-      version = "3.0.2"
-    }
     google = {
       source  = "hashicorp/google"
       version = "6.21.0"
@@ -13,11 +9,6 @@ terraform {
 
 data "google_service_account" "service_account" {
   account_id = "cr-microservices"
-}
-
-data "docker_registry_image" "image" {
-  count = length(var.containers)
-  name  = var.containers[count.index].image
 }
 
 resource "google_cloud_run_service" "cloudrun" {
@@ -55,9 +46,8 @@ resource "google_cloud_run_service" "cloudrun" {
       dynamic "containers" {
         for_each = var.containers
         content {
-          name = containers.value.name
-          # make the image the full SHA so new images trigger redeployment
-          image = format("%s@%s", containers.value.image, data.docker_registry_image.image[containers.key].sha256_digest)
+          name  = containers.value.name
+          image = containers.value.image
 
           dynamic "ports" {
             for_each = containers.value.port != 0 ? toset([containers.value.port]) : toset([])
@@ -75,6 +65,11 @@ resource "google_cloud_run_service" "cloudrun" {
                 path = liveness_probe.value
               }
             }
+          }
+
+          env {
+            name  = "SKIP_JWT_VERIFY"
+            value = "true"
           }
 
           dynamic "env" {

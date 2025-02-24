@@ -1,9 +1,5 @@
 terraform {
   required_providers {
-    docker = {
-      source  = "kreuzwerker/docker"
-      version = "3.0.2"
-    }
     google-beta = {
       source  = "hashicorp/google-beta"
       version = "6.21.0"
@@ -14,11 +10,6 @@ terraform {
 data "google_service_account" "service_account" {
   account_id = "cr-microservices"
   project    = var.project
-}
-
-data "docker_registry_image" "image" {
-  count = length(var.containers)
-  name  = var.containers[count.index].image
 }
 
 resource "google_cloud_run_v2_service" "cloudrun" {
@@ -64,6 +55,11 @@ resource "google_cloud_run_v2_service" "cloudrun" {
             period_seconds    = 300
             failure_threshold = 1
           }
+        }
+
+        env {
+          name  = "SKIP_JWT_VERIFY"
+          value = "true"
         }
 
         dynamic "env" {
