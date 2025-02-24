@@ -45,6 +45,19 @@
       ],
     },
   ],
+  customManagers: [
+    {
+      customType: 'regex',
+      description: 'Update docker tags in main.tf',
+      fileMatch: [
+        '\\.tf$',
+      ],
+      matchStrings: [
+        '\\s+image\\s+= "(?<depName>[\\w\\/\\-]+)(?::(?<currentValue>[\\w.\\-]+))?(?:@(?<currentDigest>[\\w:]+))?"',
+      ],
+      datasourceTemplate: "docker"
+    },
+  ],
   labels: [
     'dependencies',
   ],
