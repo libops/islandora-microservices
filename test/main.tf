@@ -46,7 +46,7 @@ module "houdini" {
   containers = tolist([
     {
       name           = "houdini",
-      image          = "us-docker.pkg.dev/${var.project}/shared/imagemagick:main",
+      image          = "lehighlts/scyllaridae-imagemagick:main",
       port           = 8080
       liveness_probe = "/healthcheck"
     }
@@ -66,7 +66,7 @@ module "homarus" {
   containers = tolist([
     {
       name           = "homarus",
-      image          = "us-docker.pkg.dev/${var.project}/shared/ffmpeg:main",
+      image          = "lehighlts/scyllaridae-ffmpeg:main",
       port           = 8080
       liveness_probe = "/healthcheck"
     }
@@ -86,7 +86,7 @@ module "hypercube" {
   containers = tolist([
     {
       name           = "hypercube",
-      image          = "us-docker.pkg.dev/${var.project}/shared/tesseract:main",
+      image          = "lehighlts/scyllaridae-tesseract:main",
       port           = 8080
       liveness_probe = "/healthcheck"
     }
@@ -106,7 +106,7 @@ module "fits" {
   containers = tolist([
     {
       name   = "fits",
-      image  = "us-docker.pkg.dev/${var.project}/shared/harvard-fits:main",
+      image  = "islandora/fits:main",
       memory = "2Gi"
       cpu    = "2000m"
     }
@@ -127,7 +127,7 @@ module "crayfits" {
   containers = tolist([
     {
       name           = "crayfits",
-      image          = "us-docker.pkg.dev/${var.project}/shared/fits:main",
+      image          = "lehighlts/scyllaridae-fits:main",
       liveness_probe = "/healthcheck"
     }
   ])
