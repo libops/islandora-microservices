@@ -143,11 +143,11 @@ module "homarus" {
   containers = tolist([
     {
       name           = "homarus",
-      image          = "lehighlts/scyllaridae-ffmpeg:main@sha256:3c4b8a65a3b6cdd74bf4c69c17eb8ad492b3807f6fa6df7f3577193e89f7ad67"
+      image          = "lehighlts/scyllaridae-ffmpeg:main@sha256:5f8dd4f403a7427ec4e4f7a09dc9a2993d0e70465a72cc8de93c8f26a48a3f14"
       port           = 8080
       liveness_probe = "/healthcheck"
       memory         = "8Gi"
-      cpu            = "2000m"
+      cpu            = "4000m"
     }
   ])
   providers = {
@@ -203,7 +203,7 @@ module "crayfits" {
     {
       name           = "crayfits",
       image          = "lehighlts/scyllaridae-fits:main@sha256:559bec3b752ba407a25c0b452d09a0d868b4f1f8a5a9158597abcdcbce7e6239"
-      memory         = "4Gi"
+      memory         = "2Gi"
       cpu            = "2000m"
       liveness_probe = "/healthcheck"
     }
