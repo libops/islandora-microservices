@@ -39,7 +39,7 @@ module "ocrpdf" {
   containers = tolist([
     {
       name           = "ocrpdf",
-      image          = "lehighlts/scyllaridae-ocrpdf:main@sha256:17ccea54e89e4134be72512baa91271c71c926e8e5952c8f5e39c88c63bc63e4"
+      image          = "lehighlts/scyllaridae-ocrpdf:main@sha256:a5d0ad24f7e040e6186339d58f0d388d544c8981b43ac88b1d30a0a83efd1132"
       port           = 8080
       liveness_probe = "/healthcheck"
       memory         = "4Gi"
@@ -59,7 +59,7 @@ module "pandoc" {
   containers = tolist([
     {
       name           = "pandoc",
-      image          = "lehighlts/scyllaridae-pandoc:main@sha256:3bd4f2182caa51bc10832dbf9c46c1e95a07dbf1e6c4439d51a11ea6d8a4ce3a"
+      image          = "lehighlts/scyllaridae-pandoc:main@sha256:017aeefc9e177b2231ce10af072a0dd3aad9606c191436f8b8fe5b709d601930"
       port           = 8080
       liveness_probe = "/healthcheck"
       memory         = "4Gi"
@@ -80,7 +80,7 @@ module "whisper" {
   containers = tolist([
     {
       name           = "whisper",
-      image          = "lehighlts/scyllaridae-whisper:main@sha256:872472685ea93198181e2ccc5fe2b3494ee2b9c8d5fb1ed21481a6359186c45f"
+      image          = "lehighlts/scyllaridae-whisper:main@sha256:2b1c85d985a7b6f466dfecc7f97e130aa03c3a68e3eccbb0d83b3bafd256db4f"
       port           = 8080
       liveness_probe = "/healthcheck"
       memory         = "16Gi"
@@ -102,7 +102,7 @@ module "houdini" {
   containers = tolist([
     {
       name           = "houdini",
-      image          = "lehighlts/scyllaridae-imagemagick:main@sha256:39ff91047a6d20595cdd10d80e2aa3b3551a54ecf6da2bd675f42fd1c4783fb8"
+      image          = "lehighlts/scyllaridae-imagemagick:main@sha256:856963354ae4e375ef2b540bc8d3bc29a69ef1255ea02f6a64e6a684cb190234"
       port           = 8080
       memory         = "8Gi"
       cpu            = "2000m"
@@ -123,7 +123,7 @@ module "libreoffice" {
   containers = tolist([
     {
       name           = "libreoffice",
-      image          = "lehighlts/scyllaridae-libreoffice:main@sha256:fa67802b653c77fe8a07873f8f0c4033aa5909cc5410c70422c230d48a867d41"
+      image          = "lehighlts/scyllaridae-libreoffice:main@sha256:c153caf18b256b2dade3409f06742bf53147c7dcbdd5339f4b53875b188517e5"
       port           = 8080
       memory         = "4Gi"
       cpu            = "1000m"
@@ -163,7 +163,7 @@ module "hypercube" {
   containers = tolist([
     {
       name           = "hypercube",
-      image          = "lehighlts/scyllaridae-tesseract:main@sha256:350b6c719ae62d0e3c578c990a91c94d760552130798e3703458d10939be9edd"
+      image          = "lehighlts/scyllaridae-tesseract:main@sha256:de127924be7de7f307aac0f38d0ead41ffc9d305ff8f04efce673a3b7eac1e1c"
       port           = 8080
       memory         = "8Gi"
       cpu            = "2000m"
@@ -202,7 +202,7 @@ module "crayfits" {
   containers = tolist([
     {
       name           = "crayfits",
-      image          = "lehighlts/scyllaridae-fits:main@sha256:559bec3b752ba407a25c0b452d09a0d868b4f1f8a5a9158597abcdcbce7e6239"
+      image          = "lehighlts/scyllaridae-fits:main@sha256:099259a5b59c5ba1f79a940b2e959a9b5517f7d1c93b8f62586717a584ebae05"
       memory         = "2Gi"
       cpu            = "2000m"
       liveness_probe = "/healthcheck"
