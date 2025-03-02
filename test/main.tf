@@ -46,7 +46,7 @@ module "houdini" {
   containers = tolist([
     {
       name           = "houdini",
-      image          = "lehighlts/scyllaridae-imagemagick:main@sha256:39ff91047a6d20595cdd10d80e2aa3b3551a54ecf6da2bd675f42fd1c4783fb8"
+      image          = "lehighlts/scyllaridae-imagemagick:main@sha256:856963354ae4e375ef2b540bc8d3bc29a69ef1255ea02f6a64e6a684cb190234"
       port           = 8080
       liveness_probe = "/healthcheck"
       memory         = "8Gi"
@@ -90,7 +90,7 @@ module "hypercube" {
   containers = tolist([
     {
       name           = "hypercube",
-      image          = "lehighlts/scyllaridae-tesseract:main@sha256:350b6c719ae62d0e3c578c990a91c94d760552130798e3703458d10939be9edd"
+      image          = "lehighlts/scyllaridae-tesseract:main@sha256:de127924be7de7f307aac0f38d0ead41ffc9d305ff8f04efce673a3b7eac1e1c"
       port           = 8080
       liveness_probe = "/healthcheck"
       memory         = "8Gi"
@@ -133,7 +133,7 @@ module "crayfits" {
   containers = tolist([
     {
       name           = "crayfits",
-      image          = "lehighlts/scyllaridae-fits:main@sha256:559bec3b752ba407a25c0b452d09a0d868b4f1f8a5a9158597abcdcbce7e6239"
+      image          = "lehighlts/scyllaridae-fits:main@sha256:099259a5b59c5ba1f79a940b2e959a9b5517f7d1c93b8f62586717a584ebae05"
       liveness_probe = "/healthcheck"
     }
   ])
