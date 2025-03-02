@@ -30,8 +30,17 @@ for KEY in $KEYS; do
         --header "Accept: image/jpeg" \
         --header "Apix-Ldp-Resource: http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" \
         "$URL"
-    hash image.jpg | grep fe7dd57460dbaf50faa38affde54b694
+    md5sum image.jpg | grep fe7dd57460dbaf50faa38affde54b694
     rm image.jpg
+
+    curl -s -o output.mp4 \
+        --header "Accept: video/mp4" \
+        --header "Content-Type: video/mp4" \
+        --header "Apix-Ldp-Resource: http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" \
+        "$URL"
+    md5sum output.mp4 | grep 0bcec3106c561980923bceb595bcf686
+    rm output.mp4
+
   elif [ "$KEY" == "houdini" ]; then
     curl -s -o image.png \
         --header "Accept: image/png" \
