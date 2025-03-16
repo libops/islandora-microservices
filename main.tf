@@ -94,6 +94,28 @@ module "whisper" {
   }
 }
 
+module "gemma" {
+  source = "./modules/cloudrun-v2"
+
+  name          = "gemma"
+  project       = var.project
+  max_instances = 3
+  containers = tolist([
+    {
+      name           = "gemma",
+      image          = "us-docker.pkg.dev/libops-public-microservices/shared/gemma3:4b"
+      port           = 8080
+      memory         = "16Gi"
+      cpu            = "4000m"
+      gpus           = 1
+    }
+  ])
+  regions = ["us-central1"]
+  providers = {
+    google-beta = google-beta.default
+  }
+}
+
 module "houdini" {
   source = "./modules/cloudrun"
 
