@@ -1,5 +1,4 @@
-name: Terraform Apply
-
+name: Terraform Apply with Image Matrix
 on:
   workflow_dispatch:
   pull_request_target:
@@ -18,64 +17,65 @@ jobs:
       id-token: write
       contents: read
       packages: write
-
+    strategy:
+      matrix:
+        image: ["gemma3:4b", "gemma3:12b", "gemma3:27b", "mistral-small:24b"]
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
-    - name: Install Terraform
-      uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3
-      with:
-        terraform_version: 1.5.7
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3
+        with:
+          terraform_version: 1.5.7
 
-    - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@6189d56e4096ee891640bb02ac264be376592d6a # v2
-      with:
-        version: 'latest'
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@6189d56e4096ee891640bb02ac264be376592d6a # v2
+        with:
+          version: "latest"
 
-    - name: Authenticate to Google Cloud
-      id: 'auth'
-      uses: google-github-actions/auth@6fc4af4b145ae7821d527454aa9bd537d1f2dc5f # v2
-      with:
-        workload_identity_provider: ${{ secrets.GCLOUD_OIDC_POOL }}
-        service_account: ${{ secrets.GSA }}
-        token_format: 'access_token'
+      - name: Authenticate to Google Cloud
+        id: "auth"
+        uses: google-github-actions/auth@6fc4af4b145ae7821d527454aa9bd537d1f2dc5f # v2
+        with:
+          workload_identity_provider: ${{ secrets.GCLOUD_OIDC_POOL }}
+          service_account: ${{ secrets.GSA }}
+          token_format: "access_token"
 
-    - name: Configure gcloud
-      run: |
-        gcloud config set project ${{ secrets.GCLOUD_PROJECT }}
-        gcloud config set disable_prompts true
+      - name: Configure gcloud
+        run: |
+          gcloud config set project ${{ secrets.GCLOUD_PROJECT }}
+          gcloud config set disable_prompts true
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3
 
-    - name: GAR login
-      uses: 'docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772' # v3
-      with:
-        registry: 'us-docker.pkg.dev'
-        username: 'oauth2accesstoken'
-        password: '${{ steps.auth.outputs.access_token }}'
+      - name: GAR login
+        uses: "docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772" # v3
+        with:
+          registry: "us-docker.pkg.dev"
+          username: "oauth2accesstoken"
+          password: "${{ steps.auth.outputs.access_token }}"
 
-    - name: GHCR Login
-      uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+      - name: GHCR Login
+        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Build and push GAR
-      uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4 # v6
-      with:
-        file: Dockerfile.gemma
-        push: true
-        cache-from: type=registry,ref=ghcr.io/libops/islandora-microservices:gemma3-cache
-        cache-to: type=registry,ref=ghcr.io/libops/islandora-microservices:gemma3-cache,mode=max
-        tags: |
-          us-docker.pkg.dev/libops-public-microservices/shared/gemma3:main
+      - name: convert ollama model to docker tag
+        id: model_tag
+        run: |
+          echo "::set-output name=tag::${{ matrix.image // ':/-/g }}"
 
-    - name: Terraform Init
-      run: terraform init -upgrade
-
-    - name: Terraform Apply
-      id: plan
-      run: terraform apply -auto-approve
+      - name: Build and push GAR
+        uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4 # v6
+        with:
+          push: true
+          build-args: |
+            MODEL=${{ matrix.image }}
+          cache-from: type=registry,ref=ghcr.io/libops/islandora-microservices:${{ steps.model_tag.outputs.tag }}-cache
+          cache-to: type=registry,ref=ghcr.io/libops/islandora-microservices:${{ steps.model_tag.outputs.tag }}-cache,mode=max
+          tags: |
+            us-docker.pkg.dev/libops-public-microservices/shared/${{ steps.model_tag.outputs.tag }}:main
