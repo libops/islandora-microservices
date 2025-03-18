@@ -47,11 +47,19 @@ jobs:
         gcloud config set disable_prompts true
 
     - uses: 'docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772' # v3
-      name: 'Docker login'
+      name: 'Docker login GAR'
       with:
         registry: 'us-docker.pkg.dev'
         username: 'oauth2accesstoken'
         password: '${{ steps.auth.outputs.access_token }}'
+
+    - name: Build and push GAR
+      uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4 # v6
+      with:
+        file: Dockerfile.gemma
+        push: true
+        tags: |
+          us-docker.pkg.dev/libops-public-microservices/shared/gemma3:main
 
     - name: Terraform Init
       run: terraform init -upgrade

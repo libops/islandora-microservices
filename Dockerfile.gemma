@@ -1,21 +1,10 @@
 FROM ollama/ollama:0.6.2@sha256:74a0929e1e082a09e4fdeef8594b8f4537f661366a04080e600c90ea9f712721
 
-# Listen on all interfaces, port 8080
-ENV OLLAMA_HOST 0.0.0.0:8080
+ENV OLLAMA_HOST 0.0.0.0:8080 \
+    OLLAMA_MODELS /models \
+    OLLAMA_DEBUG false \
+    OLLAMA_KEEP_ALIVE -1
 
-# Store model weight files in /models
-ENV OLLAMA_MODELS /models
+RUN ollama serve & sleep 5 && ollama pull gemma3:12b
 
-# Reduce logging verbosity
-ENV OLLAMA_DEBUG false
-
-# Never unload model weights from the GPU
-ENV OLLAMA_KEEP_ALIVE -1
-
-# Store the model weights in the container image
-ENV MODEL gemma3:4b
-RUN ollama serve & sleep 5 && ollama pull $MODEL
-
-# Start Ollama
 ENTRYPOINT ["ollama", "serve"]
-

@@ -99,14 +99,14 @@ module "gemma" {
 
   name          = "gemma"
   project       = var.project
-  max_instances = 3
+  max_instances = 1
   containers = tolist([
     {
       name           = "gemma",
-      image          = "us-docker.pkg.dev/libops-public-microservices/shared/gemma3:4b"
+      image          = "us-docker.pkg.dev/libops-public-microservices/shared/gemma3:main"
       port           = 8080
-      memory         = "16Gi"
-      cpu            = "4000m"
+      memory         = "32Gi"
+      cpu            = "8000m"
       gpus           = 1
     }
   ])
