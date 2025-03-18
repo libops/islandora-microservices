@@ -102,12 +102,56 @@ module "gemma" {
   max_instances = 1
   containers = tolist([
     {
-      name           = "gemma",
-      image          = "us-docker.pkg.dev/libops-public-microservices/shared/gemma3:main"
-      port           = 8080
-      memory         = "32Gi"
-      cpu            = "8000m"
-      gpus           = 1
+      name   = "gemma",
+      image  = "us-docker.pkg.dev/libops-public-microservices/shared/gemma3-12b:main"
+      port   = 8080
+      memory = "32Gi"
+      cpu    = "8000m"
+      gpus   = 1
+    }
+  ])
+  regions = ["us-central1"]
+  providers = {
+    google-beta = google-beta.default
+  }
+}
+
+module "gemma-27b" {
+  source = "./modules/cloudrun-v2"
+
+  name          = "gemma-27b"
+  project       = var.project
+  max_instances = 1
+  containers = tolist([
+    {
+      name   = "gemma",
+      image  = "us-docker.pkg.dev/libops-public-microservices/shared/gemma3-27b:main"
+      port   = 8080
+      memory = "32Gi"
+      cpu    = "8000m"
+      gpus   = 1
+    }
+  ])
+  regions = ["us-central1"]
+  providers = {
+    google-beta = google-beta.default
+  }
+}
+
+module "mistral" {
+  source = "./modules/cloudrun-v2"
+
+  name          = "mistral"
+  project       = var.project
+  max_instances = 1
+  containers = tolist([
+    {
+      name   = "mistral",
+      image  = "us-docker.pkg.dev/libops-public-microservices/shared/mistral-small-24b:main"
+      port   = 8080
+      memory = "32Gi"
+      cpu    = "8000m"
+      gpus   = 1
     }
   ])
   regions = ["us-central1"]
