@@ -116,28 +116,6 @@ module "gemma" {
   }
 }
 
-module "mistral" {
-  source = "./modules/cloudrun-v2"
-
-  name          = "mistral"
-  project       = var.project
-  max_instances = 1
-  containers = tolist([
-    {
-      name   = "mistral",
-      image  = "us-docker.pkg.dev/libops-public-microservices/shared/mistral-small-24b:main"
-      port   = 8080
-      memory = "32Gi"
-      cpu    = "8000m"
-      gpus   = 1
-    }
-  ])
-  regions = ["us-central1"]
-  providers = {
-    google-beta = google-beta.default
-  }
-}
-
 module "houdini" {
   source = "./modules/cloudrun"
 
