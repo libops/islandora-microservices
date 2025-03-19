@@ -19,7 +19,7 @@ jobs:
       packages: write
     strategy:
       matrix:
-        image: ["gemma3:4b", "gemma3:12b", "gemma3:27b", "mistral-small:24b"]
+        image: ["gemma3:4b", "gemma3:12b", "mistral-small:24b"]
     steps:
       - name: Checkout repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
