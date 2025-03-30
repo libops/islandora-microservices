@@ -80,3 +80,9 @@ jobs:
           cache-to: type=registry,ref=ghcr.io/libops/islandora-microservices:${{ env.OLLAMA_IMAGE_NAME }}-cache,mode=max
           tags: |
             us-docker.pkg.dev/libops-public-microservices/shared/${{ env.OLLAMA_IMAGE_NAME }}:main
+
+      - name: Terraform Init
+        run: terraform init -upgrade
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
