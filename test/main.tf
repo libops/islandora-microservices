@@ -7,7 +7,7 @@ terraform {
     }
     google = {
       source  = "hashicorp/google"
-      version = "6.27.0"
+      version = "6.30.0"
     }
   }
 
@@ -46,7 +46,7 @@ module "houdini" {
   containers = tolist([
     {
       name           = "houdini",
-      image          = "lehighlts/scyllaridae-imagemagick:main@sha256:eb07db108bc7e9503c48d4c1d7a64097c15ab903303ed47a7a371dad04535e88"
+      image          = "lehighlts/scyllaridae-imagemagick:main@sha256:f1419bb6b2eddcc66071bdbaf90945864c40881eff9b8f27c482ffa0a11ee67e"
       port           = 8080
       liveness_probe = "/healthcheck"
       memory         = "8Gi"
@@ -68,7 +68,7 @@ module "homarus" {
   containers = tolist([
     {
       name           = "homarus",
-      image          = "lehighlts/scyllaridae-ffmpeg:main@sha256:0333c04f717ce3ef48e1b152facaca0ad355b06e27480ef42b0fd193cb3aac4b"
+      image          = "lehighlts/scyllaridae-ffmpeg:main@sha256:f739642cb9835e9483bd9a873d30e054875a10e9532553791a5b2c50807f2427"
       port           = 8080
       liveness_probe = "/healthcheck"
       memory         = "8Gi"
@@ -90,7 +90,7 @@ module "hypercube" {
   containers = tolist([
     {
       name           = "hypercube",
-      image          = "lehighlts/scyllaridae-tesseract:main@sha256:3381d88e4996a7f252563f283777cf1874c2e2ce2751e37105edb25737148309"
+      image          = "lehighlts/scyllaridae-tesseract:main@sha256:e85421038a394efb5f6efb97cd517b6aaaef0193bd743b909a8efff225085f9b"
       port           = 8080
       liveness_probe = "/healthcheck"
       memory         = "8Gi"
@@ -112,7 +112,7 @@ module "fits" {
   containers = tolist([
     {
       name   = "fits",
-      image  = "islandora/fits:main@sha256:66330f97cb73367b5edcb57d66a5ce35c34ddbf8fa950c60f24ed8cb8ef0c8b9"
+      image  = "islandora/fits:main@sha256:a89e1891102c174241babc7443423a56411209808293c39783e0ffa3e7b8a4fb"
       memory = "8Gi"
       cpu    = "2000m"
     }
@@ -133,7 +133,7 @@ module "crayfits" {
   containers = tolist([
     {
       name           = "crayfits",
-      image          = "lehighlts/scyllaridae-fits:main@sha256:de8b726ff9a8917d895d9fabe25ac266733b04a7874a09c8bb96adfff5b3f2aa"
+      image          = "lehighlts/scyllaridae-fits:main@sha256:747e2ad82d60cab15199c50d1eec3addcb9744b4bd5c66e2d5e64e61347ed700"
       liveness_probe = "/healthcheck"
     }
   ])
