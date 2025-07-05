@@ -10,7 +10,6 @@ env:
   TF_VAR_project: ${{ secrets.GCLOUD_PROJECT }}
 jobs:
   apply:
-    needs: [build]
     name: terraform apply
     runs-on: ubuntu-24.04
     permissions:
