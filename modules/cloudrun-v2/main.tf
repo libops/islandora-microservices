@@ -112,6 +112,8 @@ resource "google_cloud_run_v2_service" "cloudrun" {
         }
       }
     }
+    gpu_zonal_redundancy_disabled = true
+
   }
 }
 
