@@ -225,27 +225,15 @@ module "crayfits" {
     {
       name           = "crayfits",
       image          = "lehighlts/scyllaridae-fits:main@sha256:ae5e323a22fddbdd3a0fcf0d4b849f5bb8d583920056aefa41a9de918c3ffc83"
-      memory         = "2Gi"
+      memory         = "4Gi"
       cpu            = "2000m"
       liveness_probe = "/healthcheck"
     }
   ])
   addl_env_vars = tolist([
     {
-      name  = "SCYLLARIDAE_YML"
-      value = <<EOT
-allowedMimeTypes:
-  - "*"
-cmdByMimeType:
-  default:
-    cmd: "curl"
-    args:
-      - "-X"
-      - "POST"
-      - "-F"
-      - "datafile=@-"
-      - "https://microservices.libops.site/fits/examine"
-EOT
+      name  = "FITS_URI"
+      value = "https://microservices.libops.site/fits/examine"
     }
   ])
   providers = {

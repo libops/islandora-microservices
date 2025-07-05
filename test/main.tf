@@ -139,20 +139,8 @@ module "crayfits" {
   ])
   addl_env_vars = tolist([
     {
-      name  = "SCYLLARIDAE_YML"
-      value = <<EOT
-allowedMimeTypes:
-  - "*"
-cmdByMimeType:
-  default:
-    cmd: "curl"
-    args:
-      - "-X"
-      - "POST"
-      - "-F"
-      - "datafile=@-"
-      - "${module.fits.urls[random_shuffle.region.result[0]]}/fits/examine"
-EOT
+      name  = "FITS_URI"
+      value = "${module.fits.urls[random_shuffle.region.result[0]]}/fits/examine"
     }
   ])
   providers = {
