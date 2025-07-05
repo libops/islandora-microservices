@@ -26,17 +26,17 @@ for KEY in $KEYS; do
     rm fits.xml
   elif [ "$KEY" == "homarus" ]; then
     curl -s -o image.jpg \
-        --header "X-Islandora-Args: -ss 00:00:45.000 -frames 1 -vf scale=720:-2" \
         --header "Accept: image/jpeg" \
-        --header "Apix-Ldp-Resource: http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" \
+        --header "Content-Type: video/mp4" \
+        --data-binary "@./fixtures/ForBiggerBlazes.mp4" \
         "$URL"
-    md5sum image.jpg | grep fe7dd57460dbaf50faa38affde54b694
+    md5sum image.jpg | grep f489e9e1099237f3fdc88b2b9f65505f
     rm image.jpg
 
     curl -s -o output.mp4 \
         --header "Accept: video/mp4" \
         --header "Content-Type: video/mp4" \
-        --header "Apix-Ldp-Resource: http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" \
+        --data-binary "@./fixtures/ForBiggerBlazes.mp4" \
         "$URL"
     md5sum output.mp4 | grep 0bcec3106c561980923bceb595bcf686
     rm output.mp4
