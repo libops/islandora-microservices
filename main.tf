@@ -71,20 +71,19 @@ module "pandoc" {
   }
 }
 
-module "whisper" {
+module "gpt-oss-20b" {
   source = "./modules/cloudrun-v2"
 
-  name          = "whisper"
+  name          = "gpt-20b"
   project       = var.project
-  max_instances = 3
+  max_instances = 1
   containers = tolist([
     {
-      name           = "whisper",
-      image          = "ghcr.io/lehigh-university-libraries/scyllaridae-whisper:main"
+      name           = "openai",
+      image          = "ghcr.io/libops/islandora-microservices/gpt-20b:main"
       port           = 8080
-      liveness_probe = "/healthcheck"
-      memory         = "16Gi"
-      cpu            = "4000m"
+      memory         = "32Gi"
+      cpu            = "8000m"
       gpus           = 1
     }
   ])
@@ -229,7 +228,7 @@ module "lb" {
     "hypercube"   = module.hypercube.backend,
     "fits"        = module.fits.backend
     "crayfits"    = module.crayfits.backend
-    "whisper"     = module.whisper.backend
+    "gpt"         = module.gpt-oss-20b.backend
     "pandoc"      = module.pandoc.backend
     "ocrpdf"      = module.ocrpdf.backend
     "libreoffice" = module.libreoffice.backend
