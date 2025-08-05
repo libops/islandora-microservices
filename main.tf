@@ -7,11 +7,11 @@ terraform {
     }
     google = {
       source  = "hashicorp/google"
-      version = "6.42.0"
+      version = "6.47.0"
     }
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = "6.42.0"
+      version = "6.47.0"
     }
   }
 
@@ -182,7 +182,7 @@ module "fits" {
   containers = tolist([
     {
       name   = "fits",
-      image  = "islandora/fits:main@sha256:e824a107ce8d60e6d0458fe9a6541f670264e83a9669623a15d3252d6c8f516a"
+      image  = "islandora/fits:main@sha256:698971c83dfc7afd98926486700bb951498246503ca26bc8e7c3174d0e3df066"
       memory = "8Gi"
       cpu    = "2000m"
     }
