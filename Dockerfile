@@ -9,4 +9,3 @@ ENV \
 RUN ollama serve & sleep 5 && ollama pull gpt-oss:20b
 
 ENTRYPOINT ["ollama", "serve"]
-
