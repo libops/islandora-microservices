@@ -43,6 +43,13 @@ jobs:
           gcloud config set project ${{ secrets.GCLOUD_PROJECT }}
           gcloud config set disable_prompts true
 
+      - name: "GAR login"
+        uses: "docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772" # v3
+        with:
+          registry: "us-docker.pkg.dev"
+          username: "oauth2accesstoken"
+          password: "${{ steps.auth.outputs.access_token }}"
+
       - name: ghcr Login
         uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3
         with:
@@ -50,12 +57,38 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: extract docker variables
+        id: vars
+        run: |
+          DOCKER_IMAGE=ghcr.io/libops/islandora-microservices/gpt-20b
+
+          TAG=$(echo "${GITHUB_REF#refs/heads/}" | sed 's/[^a-zA-Z0-9._-]//g' | awk '{print substr($0, length($0)-120)}')
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            TAG=$(echo "${GITHUB_REF#refs/tags/}" | sed 's/[^a-zA-Z0-9._-]//g' | awk '{print substr($0, length($0)-120)}')
+          fi
+
+          CACHE_TO=""
+          if [ "${TAG}" = "main" ]; then
+            CACHE_TO="type=registry,ref=$DOCKER_IMAGE:cache,mode=max"
+          fi
+          CACHE_FROM="type=registry,ref=$DOCKER_IMAGE:cache"
+
+          {
+            echo "image=$DOCKER_IMAGE"
+            echo "tag=$TAG"
+            echo "cache-to=$CACHE_TO"
+            echo "cache-from=$CACHE_FROM"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Build and push GAR
         uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6
         with:
           push: true
+          cache-from: ${{ steps.vars.outputs.cache-from }}
+          cache-to: ${{ steps.vars.outputs.cache-to }}
           tags: |
-            ghcr.io/libops/islandora-microservices/gpt-20b:main
+            ${{ steps.vars.outputs.image }}:${{ steps.vars.outputs.tag }}
+            us-docker.pkg.dev/libops-public-microservices/shared/gpt-20b:${{ steps.vars.outputs.tag }}
 
       - name: Terraform Init
         run: terraform init -upgrade  > /dev/null 2>&1

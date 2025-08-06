@@ -79,12 +79,12 @@ module "gpt-oss-20b" {
   max_instances = 1
   containers = tolist([
     {
-      name           = "openai",
-      image          = "ghcr.io/libops/islandora-microservices/gpt-20b:main"
-      port           = 8080
-      memory         = "32Gi"
-      cpu            = "8000m"
-      gpus           = 1
+      name   = "openai",
+      image  = "us-docker.pkg.dev/libops-public-microservices/shared/gpt-20b:main"
+      port   = 8080
+      memory = "32Gi"
+      cpu    = "8000m"
+      gpus   = 1
     }
   ])
   regions = ["us-central1"]
