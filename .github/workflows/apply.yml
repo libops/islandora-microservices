@@ -50,13 +50,6 @@ jobs:
           username: "oauth2accesstoken"
           password: "${{ steps.auth.outputs.access_token }}"
 
-      - name: ghcr Login
-        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
       - name: extract docker variables
         id: vars
         run: |
@@ -85,7 +78,6 @@ jobs:
         with:
           push: true
           tags: |
-            ${{ steps.vars.outputs.image }}:${{ steps.vars.outputs.tag }}
             us-docker.pkg.dev/libops-public-microservices/shared/gpt-20b:${{ steps.vars.outputs.tag }}
 
       - name: Terraform Init
