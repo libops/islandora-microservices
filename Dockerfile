@@ -4,8 +4,14 @@ ENV \
   OLLAMA_HOST=0.0.0.0:8080 \
   OLLAMA_MODELS=/models \
   OLLAMA_DEBUG=false \
-  OLLAMA_KEEP_ALIVE=-1
+  OLLAMA_KEEP_ALIVE=-1 \
+  OLLAMA_MODEL=gpt-oss:20b
 
-RUN ollama serve & sleep 5 && ollama pull gpt-oss:20b
+RUN ollama serve & sleep 5 && ollama pull $OLLAMA_MODEL
 
-ENTRYPOINT ["ollama", "serve"]
+WORKDIR /app
+
+COPY docker-entrypoint.sh .
+
+ENTRYPOINT ["/app/docker-entrypoint.sh"]
+
