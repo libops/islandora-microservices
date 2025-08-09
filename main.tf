@@ -182,7 +182,7 @@ module "fits" {
   containers = tolist([
     {
       name   = "fits",
-      image  = "islandora/fits:main@sha256:698971c83dfc7afd98926486700bb951498246503ca26bc8e7c3174d0e3df066"
+      image  = "islandora/fits:main@sha256:271097821099f445c9a163ceb295d910aa6535a03f8ee6b6791f1871f56271d4"
       memory = "8Gi"
       cpu    = "2000m"
     }
