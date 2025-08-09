@@ -80,7 +80,7 @@ module "gpt-oss-20b" {
   containers = tolist([
     {
       name   = "openai",
-      image  = "us-docker.pkg.dev/libops-public-microservices/shared/gpt-20b:main@sha256:66414ecad829590106a4a7095d186dbbb960acc8d02269e93d03b84ea64f7c72"
+      image  = "us-docker.pkg.dev/libops-public-microservices/shared/gpt-20b:main@${var.gpt_image_digest}"
       port   = 8080
       memory = "32Gi"
       cpu    = "8000m"

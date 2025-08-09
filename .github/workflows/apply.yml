@@ -1,11 +1,10 @@
 name: Terraform Apply
 on:
   workflow_dispatch:
-  pull_request_target:
+  push:
     branches:
       - main
-    types:
-      - closed
+
 env:
   TF_VAR_project: ${{ secrets.GCLOUD_PROJECT }}
 jobs:
@@ -74,6 +73,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Build and push GAR
+        id: build
         uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6
         with:
           push: true
@@ -85,3 +85,5 @@ jobs:
 
       - name: Terraform Apply
         run: terraform apply -auto-approve > /dev/null 2>&1
+        env:
+          TF_VAR_gpt_image_digest: ${{ steps.build.outputs.digest }}
