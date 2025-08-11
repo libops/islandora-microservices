@@ -83,7 +83,7 @@ module "gpt-oss-20b" {
       image  = "us-docker.pkg.dev/libops-public-microservices/shared/gpt-20b:main@${var.gpt_image_digest}"
       port   = 8080
       memory = "16Gi"
-      cpu    = "8000m"
+      cpu    = "4000m"
       gpus   = 1
     }
   ])
