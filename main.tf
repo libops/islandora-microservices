@@ -82,7 +82,7 @@ module "gpt-oss-20b" {
       name   = "openai",
       image  = "us-docker.pkg.dev/libops-public-microservices/shared/gpt-20b:main@${var.gpt_image_digest}"
       port   = 8080
-      memory = "32Gi"
+      memory = "16Gi"
       cpu    = "8000m"
       gpus   = 1
     }
