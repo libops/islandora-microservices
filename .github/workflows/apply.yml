@@ -17,7 +17,7 @@ jobs:
       packages: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3
@@ -25,7 +25,7 @@ jobs:
           terraform_version: 1.5.7
 
       - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@6189d56e4096ee891640bb02ac264be376592d6a # v2
+        uses: google-github-actions/setup-gcloud@cb1e50a9932213ecece00a606661ae9ca44f3397 # v2
         with:
           version: "latest"
 
@@ -43,7 +43,7 @@ jobs:
           gcloud config set disable_prompts true
 
       - name: "GAR login"
-        uses: "docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772" # v3
+        uses: "docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1" # v3
         with:
           registry: "us-docker.pkg.dev"
           username: "oauth2accesstoken"
