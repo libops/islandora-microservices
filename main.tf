@@ -39,7 +39,7 @@ module "ocrpdf" {
   containers = tolist([
     {
       name           = "ocrpdf",
-      image          = "ghcr.io/lehigh-university-libraries/scyllaridae-ocrpdf:main"
+      image          = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-ocrpdf:main"
       port           = 8080
       liveness_probe = "/healthcheck"
       memory         = "4Gi"
@@ -59,7 +59,7 @@ module "pandoc" {
   containers = tolist([
     {
       name           = "pandoc",
-      image          = "ghcr.io/lehigh-university-libraries/scyllaridae-pandoc:main"
+      image          = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-pandoc:main"
       port           = 8080
       liveness_probe = "/healthcheck"
       memory         = "4Gi"
@@ -71,28 +71,6 @@ module "pandoc" {
   }
 }
 
-module "gpt-oss-20b" {
-  source = "./modules/cloudrun-v2"
-
-  name          = "gpt-20b"
-  project       = var.project
-  max_instances = 1
-  containers = tolist([
-    {
-      name   = "openai",
-      image  = "us-docker.pkg.dev/libops-public-microservices/shared/gpt-20b:main@${var.gpt_image_digest}"
-      port   = 8080
-      memory = "16Gi"
-      cpu    = "4000m"
-      gpus   = 1
-    }
-  ])
-  regions = ["us-central1"]
-  providers = {
-    google-beta = google-beta.default
-  }
-}
-
 module "houdini" {
   source = "./modules/cloudrun"
 
@@ -101,7 +79,7 @@ module "houdini" {
   containers = tolist([
     {
       name           = "houdini",
-      image          = "ghcr.io/lehigh-university-libraries/scyllaridae-imagemagick:main"
+      image          = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-imagemagick:main"
       port           = 8080
       memory         = "8Gi"
       cpu            = "2000m"
@@ -122,7 +100,7 @@ module "libreoffice" {
   containers = tolist([
     {
       name           = "libreoffice",
-      image          = "ghcr.io/lehigh-university-libraries/scyllaridae-libreoffice:main"
+      image          = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-libreoffice:main"
       port           = 8080
       memory         = "4Gi"
       cpu            = "1000m"
@@ -142,7 +120,7 @@ module "homarus" {
   containers = tolist([
     {
       name           = "homarus",
-      image          = "ghcr.io/lehigh-university-libraries/scyllaridae-ffmpeg:main"
+      image          = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-ffmpeg:main"
       port           = 8080
       liveness_probe = "/healthcheck"
       memory         = "8Gi"
@@ -162,7 +140,7 @@ module "hypercube" {
   containers = tolist([
     {
       name           = "hypercube",
-      image          = "ghcr.io/lehigh-university-libraries/scyllaridae-tesseract:main"
+      image          = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-tesseract:main"
       port           = 8080
       memory         = "8Gi"
       cpu            = "2000m"
@@ -201,7 +179,7 @@ module "crayfits" {
   containers = tolist([
     {
       name           = "crayfits",
-      image          = "ghcr.io/lehigh-university-libraries/scyllaridae-fits:main"
+      image          = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-fits:main"
       memory         = "4Gi"
       cpu            = "2000m"
       liveness_probe = "/healthcheck"
@@ -228,7 +206,6 @@ module "lb" {
     "hypercube"   = module.hypercube.backend,
     "fits"        = module.fits.backend
     "crayfits"    = module.crayfits.backend
-    "gpt"         = module.gpt-oss-20b.backend
     "pandoc"      = module.pandoc.backend
     "ocrpdf"      = module.ocrpdf.backend
     "libreoffice" = module.libreoffice.backend
