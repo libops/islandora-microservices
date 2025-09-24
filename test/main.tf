@@ -7,8 +7,9 @@ terraform {
     }
     google = {
       source  = "hashicorp/google"
-      version = "6.47.0"
+      version = "7.4.0"
     }
+
   }
 
   backend "gcs" {
@@ -37,7 +38,7 @@ resource "random_shuffle" "region" {
 
 
 module "houdini" {
-  source = "../modules/cloudrun"
+  source = "git::https://github.com/libops/terraform-cloudrun-v2?ref=0.3.1"
 
   name    = "houdini-test"
   project = var.project
@@ -46,11 +47,17 @@ module "houdini" {
   containers = tolist([
     {
       name           = "houdini",
-      image          = "lehighlts/scyllaridae-imagemagick:main@sha256:25e47a39f11dd6e039d474aad69ea18e5fea74636c6f65c1c3bd22fc9949cb77"
+      image          = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-imagemagick:main"
       port           = 8080
       liveness_probe = "/healthcheck"
       memory         = "8Gi"
       cpu            = "2000m"
+    }
+  ])
+  addl_env_vars = tolist([
+    {
+      name  = "SKIP_JWT_VERIFY"
+      value = "true"
     }
   ])
   providers = {
@@ -59,7 +66,7 @@ module "houdini" {
 }
 
 module "homarus" {
-  source = "../modules/cloudrun"
+  source = "git::https://github.com/libops/terraform-cloudrun-v2?ref=0.3.1"
 
   name    = "homarus-test"
   project = var.project
@@ -68,11 +75,17 @@ module "homarus" {
   containers = tolist([
     {
       name           = "homarus",
-      image          = "lehighlts/scyllaridae-ffmpeg:main@sha256:b8f789f3ad8e64fb3bb202b18384e122da79b28a58abc552aa25748cc2d4996b"
+      image          = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-ffmpeg:main"
       port           = 8080
       liveness_probe = "/healthcheck"
       memory         = "8Gi"
       cpu            = "4000m"
+    }
+  ])
+  addl_env_vars = tolist([
+    {
+      name  = "SKIP_JWT_VERIFY"
+      value = "true"
     }
   ])
   providers = {
@@ -81,7 +94,7 @@ module "homarus" {
 }
 
 module "hypercube" {
-  source = "../modules/cloudrun"
+  source = "git::https://github.com/libops/terraform-cloudrun-v2?ref=0.3.1"
 
   name    = "hypercube-test"
   project = var.project
@@ -90,11 +103,17 @@ module "hypercube" {
   containers = tolist([
     {
       name           = "hypercube",
-      image          = "lehighlts/scyllaridae-tesseract:main@sha256:f978ec9271bdf3c76739ae4084700a10fb092eb10765151bafae3fc8a1d5a2a3"
+      image          = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-tesseract:main"
       port           = 8080
       liveness_probe = "/healthcheck"
       memory         = "8Gi"
       cpu            = "2000m"
+    }
+  ])
+  addl_env_vars = tolist([
+    {
+      name  = "SKIP_JWT_VERIFY"
+      value = "true"
     }
   ])
   providers = {
@@ -103,7 +122,7 @@ module "hypercube" {
 }
 
 module "fits" {
-  source = "../modules/cloudrun"
+  source = "git::https://github.com/libops/terraform-cloudrun-v2?ref=0.3.1"
 
   name    = "fits-test"
   project = var.project
@@ -124,7 +143,7 @@ module "fits" {
 }
 
 module "crayfits" {
-  source = "../modules/cloudrun"
+  source = "git::https://github.com/libops/terraform-cloudrun-v2?ref=0.3.1"
 
   name    = "crayfits-test"
   project = var.project
@@ -132,15 +151,18 @@ module "crayfits" {
   skipNeg = true
   containers = tolist([
     {
-      name           = "crayfits",
-      image          = "lehighlts/scyllaridae-fits:main@sha256:ae5e323a22fddbdd3a0fcf0d4b849f5bb8d583920056aefa41a9de918c3ffc83"
-      liveness_probe = "/healthcheck"
+      name  = "crayfits",
+      image = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-fits:main"
     }
   ])
   addl_env_vars = tolist([
     {
       name  = "FITS_URI"
       value = "${module.fits.urls[random_shuffle.region.result[0]]}/fits/examine"
+    },
+    {
+      name  = "SKIP_JWT_VERIFY"
+      value = "true"
     }
   ])
   providers = {

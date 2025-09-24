@@ -47,5 +47,3 @@ jobs:
 
       - name: Terraform Apply
         run: terraform apply -auto-approve > /dev/null 2>&1
-        env:
-          TF_VAR_gpt_image_digest: ${{ steps.build.outputs.digest }}

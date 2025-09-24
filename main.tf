@@ -7,11 +7,7 @@ terraform {
     }
     google = {
       source  = "hashicorp/google"
-      version = "6.47.0"
-    }
-    google-beta = {
-      source  = "hashicorp/google-beta"
-      version = "6.47.0"
+      version = "7.4.0"
     }
   }
 
@@ -26,24 +22,24 @@ provider "google" {
   project = var.project
 }
 
-provider "google-beta" {
-  alias   = "default"
-  project = var.project
-}
-
 module "ocrpdf" {
-  source = "./modules/cloudrun"
+  source = "git::https://github.com/libops/terraform-cloudrun-v2?ref=0.3.1"
 
   name    = "ocrpdf"
   project = var.project
   containers = tolist([
     {
-      name           = "ocrpdf",
-      image          = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-ocrpdf:main"
-      port           = 8080
-      liveness_probe = "/healthcheck"
-      memory         = "4Gi"
-      cpu            = "2000m"
+      name   = "ocrpdf",
+      image  = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-ocrpdf:main"
+      port   = 8080
+      memory = "4Gi"
+      cpu    = "2000m"
+    }
+  ])
+  addl_env_vars = tolist([
+    {
+      name  = "SKIP_JWT_VERIFY"
+      value = "true"
     }
   ])
   providers = {
@@ -52,18 +48,23 @@ module "ocrpdf" {
 }
 
 module "pandoc" {
-  source = "./modules/cloudrun"
+  source = "git::https://github.com/libops/terraform-cloudrun-v2?ref=0.3.1"
 
   name    = "pandoc"
   project = var.project
   containers = tolist([
     {
-      name           = "pandoc",
-      image          = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-pandoc:main"
-      port           = 8080
-      liveness_probe = "/healthcheck"
-      memory         = "4Gi"
-      cpu            = "4000m"
+      name   = "pandoc",
+      image  = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-pandoc:main"
+      port   = 8080
+      memory = "4Gi"
+      cpu    = "4000m"
+    }
+  ])
+  addl_env_vars = tolist([
+    {
+      name  = "SKIP_JWT_VERIFY"
+      value = "true"
     }
   ])
   providers = {
@@ -72,18 +73,23 @@ module "pandoc" {
 }
 
 module "houdini" {
-  source = "./modules/cloudrun"
+  source = "git::https://github.com/libops/terraform-cloudrun-v2?ref=0.3.1"
 
   name    = "houdini"
   project = var.project
   containers = tolist([
     {
-      name           = "houdini",
-      image          = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-imagemagick:main"
-      port           = 8080
-      memory         = "8Gi"
-      cpu            = "2000m"
-      liveness_probe = "/healthcheck"
+      name   = "houdini",
+      image  = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-imagemagick:main"
+      port   = 8080
+      memory = "8Gi"
+      cpu    = "2000m"
+    }
+  ])
+  addl_env_vars = tolist([
+    {
+      name  = "SKIP_JWT_VERIFY"
+      value = "true"
     }
   ])
   providers = {
@@ -93,18 +99,23 @@ module "houdini" {
 
 
 module "libreoffice" {
-  source = "./modules/cloudrun"
+  source = "git::https://github.com/libops/terraform-cloudrun-v2?ref=0.3.1"
 
   name    = "libreoffice"
   project = var.project
   containers = tolist([
     {
-      name           = "libreoffice",
-      image          = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-libreoffice:main"
-      port           = 8080
-      memory         = "4Gi"
-      cpu            = "1000m"
-      liveness_probe = "/healthcheck"
+      name   = "libreoffice",
+      image  = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-libreoffice:main"
+      port   = 8080
+      memory = "4Gi"
+      cpu    = "1000m"
+    }
+  ])
+  addl_env_vars = tolist([
+    {
+      name  = "SKIP_JWT_VERIFY"
+      value = "true"
     }
   ])
   providers = {
@@ -113,18 +124,23 @@ module "libreoffice" {
 }
 
 module "homarus" {
-  source = "./modules/cloudrun"
+  source = "git::https://github.com/libops/terraform-cloudrun-v2?ref=0.3.1"
 
   name    = "homarus"
   project = var.project
   containers = tolist([
     {
-      name           = "homarus",
-      image          = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-ffmpeg:main"
-      port           = 8080
-      liveness_probe = "/healthcheck"
-      memory         = "8Gi"
-      cpu            = "4000m"
+      name   = "homarus",
+      image  = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-ffmpeg:main"
+      port   = 8080
+      memory = "8Gi"
+      cpu    = "4000m"
+    }
+  ])
+  addl_env_vars = tolist([
+    {
+      name  = "SKIP_JWT_VERIFY"
+      value = "true"
     }
   ])
   providers = {
@@ -133,18 +149,23 @@ module "homarus" {
 }
 
 module "hypercube" {
-  source = "./modules/cloudrun"
+  source = "git::https://github.com/libops/terraform-cloudrun-v2?ref=0.3.1"
 
   name    = "hypercube"
   project = var.project
   containers = tolist([
     {
-      name           = "hypercube",
-      image          = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-tesseract:main"
-      port           = 8080
-      memory         = "8Gi"
-      cpu            = "2000m"
-      liveness_probe = "/healthcheck"
+      name   = "hypercube",
+      image  = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-tesseract:main"
+      port   = 8080
+      memory = "8Gi"
+      cpu    = "2000m"
+    }
+  ])
+  addl_env_vars = tolist([
+    {
+      name  = "SKIP_JWT_VERIFY"
+      value = "true"
     }
   ])
   providers = {
@@ -153,7 +174,7 @@ module "hypercube" {
 }
 
 module "fits" {
-  source = "./modules/cloudrun"
+  source = "git::https://github.com/libops/terraform-cloudrun-v2?ref=0.3.1"
 
   name    = "fits"
   project = var.project
@@ -172,23 +193,26 @@ module "fits" {
 }
 
 module "crayfits" {
-  source = "./modules/cloudrun"
+  source = "git::https://github.com/libops/terraform-cloudrun-v2?ref=0.3.1"
 
   name    = "crayfits"
   project = var.project
   containers = tolist([
     {
-      name           = "crayfits",
-      image          = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-fits:main"
-      memory         = "4Gi"
-      cpu            = "2000m"
-      liveness_probe = "/healthcheck"
+      name   = "crayfits",
+      image  = "us-docker.pkg.dev/${var.project}/shared/scyllaridae-fits:main"
+      memory = "4Gi"
+      cpu    = "2000m"
     }
   ])
   addl_env_vars = tolist([
     {
       name  = "FITS_URI"
       value = "https://microservices.libops.site/fits/examine"
+    },
+    {
+      name  = "SKIP_JWT_VERIFY"
+      value = "true"
     }
   ])
   providers = {
